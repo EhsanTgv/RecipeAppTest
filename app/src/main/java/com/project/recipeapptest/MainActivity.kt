@@ -13,7 +13,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -44,21 +46,33 @@ class MainActivity : ComponentActivity() {
                     contentScale = ContentScale.Crop
                 )
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Happy Meal",
-                        fontSize = 26.sp
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Happy Meal",
+                            fontSize = 26.sp
+                        )
+                        Text(
+                            text = "$5.99",
+                            fontSize = 17.sp,
+                            color = Color(0xff85bb65),
+                            modifier = Modifier.align(Alignment.CenterVertically)
+                        )
+                    }
                     Spacer(modifier = Modifier.padding(top = 10.dp))
                     Text(
                         text = "800 Calories",
                         fontSize = 17.sp
                     )
                     Spacer(modifier = Modifier.padding(top = 10.dp))
-                    Text(
-                        text = "$5.99",
-                        fontSize = 17.sp,
-                        color = Color(0xff85bb65)
-                    )
+                    Button(
+                        onClick = {},
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text(text = "Order Now")
+                    }
                 }
             }
         }
