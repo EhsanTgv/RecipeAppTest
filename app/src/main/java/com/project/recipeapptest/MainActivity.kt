@@ -32,10 +32,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.mainContainer, RecipeListFragment())
-            .commit()
-
 //        setContent {
 //            Column(
 //                modifier = Modifier
