@@ -2,7 +2,7 @@ package com.project.recipeapptest.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class RecipeNetworkEntity(
+data class RecipeDto(
     @SerializedName("pk") val primaryKey: Int? = null,
     @SerializedName("title") val title: String? = null,
     @SerializedName("publisher") val publisher: String? = null,
