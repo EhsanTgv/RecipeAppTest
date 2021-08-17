@@ -1,4 +1,4 @@
-package com.project.recipeapptest
+package com.project.recipeapptest.presentation.ui.recipe
 
 import android.os.Bundle
 import android.view.LayoutInflater
