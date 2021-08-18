@@ -18,7 +18,7 @@ class RecipeListViewModel
     @Named("auth_token") private val token: String
 ) : ViewModel() {
 
-    val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
+    val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
 
 
     init {
