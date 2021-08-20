@@ -32,6 +32,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.project.recipeapptest.R
+import com.project.recipeapptest.presentation.components.FoodCategoryChip
 import com.project.recipeapptest.presentation.components.RecipeCard
 import com.project.recipeapptest.util.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,7 +59,7 @@ class RecipeListFragment : Fragment() {
                 Column {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colors.primary,
+                        color = Color.White,
                         elevation = 8.dp
                     ) {
                         Column {
@@ -104,11 +105,12 @@ class RecipeListFragment : Fragment() {
                                 itemsIndexed(
                                     items = getAllFoodCategories()
                                 ) { index, category ->
-                                    Text(
-                                        text = category.value,
-                                        style = MaterialTheme.typography.body2,
-                                        color = MaterialTheme.colors.secondary,
-                                        modifier = Modifier.padding(8.dp)
+                                    FoodCategoryChip(
+                                        category = category.value,
+                                        onExecuteSearch = {
+                                            viewModel.onQueryChanged(it)
+                                            viewModel.newSearch(it)
+                                        }
                                     )
                                 }
                             }
