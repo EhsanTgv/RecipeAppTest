@@ -7,16 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
@@ -46,7 +49,6 @@ class RecipeListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-
                 val recipes = viewModel.recipes.value
 
                 val query = viewModel.query.value
@@ -59,41 +61,57 @@ class RecipeListFragment : Fragment() {
                         color = MaterialTheme.colors.primary,
                         elevation = 8.dp
                     ) {
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            TextField(
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .padding(8.dp),
-                                value = query,
-                                onValueChange = { newValue ->
-                                    viewModel.onQueryChanged(newValue)
-                                },
-                                label = {
-                                    Text(text = "Search")
-                                },
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Text,
-                                    imeAction = ImeAction.Search
-                                ),
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Filled.Search,
-                                        contentDescription = "",
+                        Column {
+                            Row(modifier = Modifier.fillMaxWidth()) {
+                                TextField(
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.9f)
+                                        .padding(8.dp),
+                                    value = query,
+                                    onValueChange = { newValue ->
+                                        viewModel.onQueryChanged(newValue)
+                                    },
+                                    label = {
+                                        Text(text = "Search")
+                                    },
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Text,
+                                        imeAction = ImeAction.Search
+                                    ),
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Filled.Search,
+                                            contentDescription = "",
+                                        )
+                                    },
+                                    keyboardActions = KeyboardActions(
+                                        onSearch = {
+                                            viewModel.newSearch(query)
+                                            keyboardController?.hide()
+                                        }
+                                    ),
+                                    textStyle = TextStyle(
+                                        color = MaterialTheme.colors.onSurface
+                                    ),
+                                    colors = TextFieldDefaults.textFieldColors(
+                                        backgroundColor = MaterialTheme.colors.surface
+                                    ),
+                                )
+                            }
+                            LazyRow(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                itemsIndexed(
+                                    items = getAllFoodCategories()
+                                ) { index, category ->
+                                    Text(
+                                        text = category.value,
+                                        style = MaterialTheme.typography.body2,
+                                        color = MaterialTheme.colors.secondary,
+                                        modifier = Modifier.padding(8.dp)
                                     )
-                                },
-                                keyboardActions = KeyboardActions(
-                                    onSearch = {
-                                        viewModel.newSearch(query)
-                                        keyboardController?.hide()
-                                    }
-                                ),
-                                textStyle = TextStyle(
-                                    color = MaterialTheme.colors.onSurface
-                                ),
-                                colors = TextFieldDefaults.textFieldColors(
-                                    backgroundColor = MaterialTheme.colors.surface
-                                ),
-                            )
+                                }
+                            }
                         }
                     }
                     LazyColumn {
