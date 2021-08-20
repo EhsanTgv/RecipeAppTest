@@ -15,6 +15,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -54,6 +55,8 @@ class RecipeListFragment : Fragment() {
 
                 val query = viewModel.query.value
 
+                val selectedCategory = viewModel.selectedCategory.value
+
                 val keyboardController = LocalSoftwareKeyboardController.current
 
                 Column {
@@ -87,7 +90,7 @@ class RecipeListFragment : Fragment() {
                                     },
                                     keyboardActions = KeyboardActions(
                                         onSearch = {
-                                            viewModel.newSearch(query)
+                                            viewModel.newSearch()
                                             keyboardController?.hide()
                                         }
                                     ),
@@ -100,17 +103,23 @@ class RecipeListFragment : Fragment() {
                                 )
                             }
                             LazyRow(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = 8.dp,
+                                        bottom = 8.dp,
+                                    )
                             ) {
                                 itemsIndexed(
                                     items = getAllFoodCategories()
                                 ) { index, category ->
                                     FoodCategoryChip(
                                         category = category.value,
-                                        onExecuteSearch = {
-                                            viewModel.onQueryChanged(it)
-                                            viewModel.newSearch(it)
-                                        }
+                                        isSelected = selectedCategory == category,
+                                        onSelectedCategoryChanged = {
+                                            viewModel.onSelectedCategoryChanged(it)
+                                        },
+                                        onExecuteSearch = viewModel::newSearch
                                     )
                                 }
                             }
