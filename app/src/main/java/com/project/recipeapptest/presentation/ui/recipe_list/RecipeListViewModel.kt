@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.project.recipeapptest.domin.model.Recipe
 import com.project.recipeapptest.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named

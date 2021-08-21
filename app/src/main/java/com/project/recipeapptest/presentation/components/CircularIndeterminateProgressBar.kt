@@ -1,28 +1,30 @@
 package com.project.recipeapptest.presentation.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 
 @Composable
 fun CircularIndeterminateProgressBar(
     isDisplayed: Boolean
 ) {
     if (isDisplayed) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            horizontalArrangement = Arrangement.Center
+        ConstraintLayout(
+            modifier = Modifier.fillMaxWidth()
         ) {
+            val progressBar = createRef()
+            val topGuideline = createGuidelineFromTop(0.5f)
+
             CircularProgressIndicator(
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.constrainAs(progressBar) {
+                    top.linkTo(topGuideline)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
             )
         }
     }
