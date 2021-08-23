@@ -20,11 +20,17 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.project.recipeapptest.presentation.BaseApplication
 import com.project.recipeapptest.presentation.components.*
+import com.project.recipeapptest.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
+
+    @Inject
+    lateinit var application: BaseApplication
 
     private val viewModel: RecipeListViewModel by activityViewModels()
 
@@ -36,39 +42,44 @@ class RecipeListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                val recipes = viewModel.recipes.value
+                AppTheme(darkTheme = application.isDark.value) {
+                    val recipes = viewModel.recipes.value
 
-                val query = viewModel.query.value
+                    val query = viewModel.query.value
 
-                val selectedCategory = viewModel.selectedCategory.value
+                    val selectedCategory = viewModel.selectedCategory.value
 
-                val loading = viewModel.loading.value
+                    val loading = viewModel.loading.value
 
-                Column {
-                    SearchAppBar(
-                        query = query,
-                        onQueryChanged = viewModel::onQueryChanged,
-                        onExecuteSearch = viewModel::newSearch,
-                        selectedCategory = selectedCategory,
-                        onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged
-                    )
-
-                    Box(
-                        modifier = Modifier.fillMaxWidth()
+                    Column(
+                        modifier = Modifier.background(MaterialTheme.colors.background)
                     ) {
-                        if (loading) {
-                            LoadingRecipeListShimmer(250.dp)
+                        SearchAppBar(
+                            query = query,
+                            onQueryChanged = viewModel::onQueryChanged,
+                            onExecuteSearch = viewModel::newSearch,
+                            selectedCategory = selectedCategory,
+                            onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                            onToggleTheme = { application.toggleTheme() }
+                        )
 
-                        } else {
-                            LazyColumn {
-                                itemsIndexed(
-                                    items = recipes
-                                ) { index, recipe ->
-                                    RecipeCard(recipe = recipe, onClick = {})
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            if (loading) {
+                                LoadingRecipeListShimmer(250.dp)
+
+                            } else {
+                                LazyColumn {
+                                    itemsIndexed(
+                                        items = recipes
+                                    ) { index, recipe ->
+                                        RecipeCard(recipe = recipe, onClick = {})
+                                    }
                                 }
                             }
+                            CircularIndeterminateProgressBar(isDisplayed = loading)
                         }
-                        CircularIndeterminateProgressBar(isDisplayed = loading)
                     }
                 }
             }
