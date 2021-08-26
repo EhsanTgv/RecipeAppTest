@@ -52,6 +52,8 @@ class RecipeListFragment : Fragment() {
 
                     val loading = viewModel.loading.value
 
+                    val page = viewModel.page.value
+
                     Scaffold(
                         topBar = {
                             SearchAppBar(
@@ -69,14 +71,17 @@ class RecipeListFragment : Fragment() {
                                     .fillMaxWidth()
                                     .background(MaterialTheme.colors.background)
                             ) {
-                                if (loading) {
+                                if (loading && recipes.isEmpty()) {
                                     LoadingRecipeListShimmer(250.dp)
-
                                 } else {
                                     LazyColumn {
                                         itemsIndexed(
                                             items = recipes
                                         ) { index, recipe ->
+                                            viewModel.onChangeRecipeScrollPosition(index)
+                                            if ((index + 5) >= (page * PAGE_SIZE) && !loading) {
+                                                viewModel.nextPage()
+                                            }
                                             RecipeCard(recipe = recipe, onClick = {})
                                         }
                                     }
