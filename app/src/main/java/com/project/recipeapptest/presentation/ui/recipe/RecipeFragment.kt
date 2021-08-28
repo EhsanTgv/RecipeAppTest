@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -14,7 +18,12 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.project.recipeapptest.presentation.BaseApplication
+import com.project.recipeapptest.presentation.components.CircularIndeterminateProgressBar
+import com.project.recipeapptest.presentation.components.RecipeView
+import com.project.recipeapptest.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
@@ -22,6 +31,9 @@ class RecipeFragment : Fragment() {
     private val viewModel: RecipeViewModel by viewModels()
 
     private val args: RecipeFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var application: BaseApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +51,26 @@ class RecipeFragment : Fragment() {
 
                 val recipe = viewModel.recipe.value
 
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = recipe?.let {
-                            "Selected RecipeId: ${it.title}"
-                        } ?: "Loading...",
-                        fontSize = 21.sp,
-                    )
+                val scaffoldState = rememberScaffoldState()
+
+                AppTheme(darkTheme = application.isDark.value) {
+                    Scaffold(
+                        scaffoldState = scaffoldState,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            if (loading && recipe == null) {
+                                Text("Loading...")
+                            } else {
+                                recipe?.let {
+                                    RecipeView(recipe = it)
+                                }
+                            }
+                            CircularIndeterminateProgressBar(isDisplayed = loading)
+                        }
+                    }
                 }
             }
         }
