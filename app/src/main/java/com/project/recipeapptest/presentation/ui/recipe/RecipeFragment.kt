@@ -20,6 +20,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.project.recipeapptest.presentation.BaseApplication
 import com.project.recipeapptest.presentation.components.CircularIndeterminateProgressBar
+import com.project.recipeapptest.presentation.components.IMAGE_HEIGHT
+import com.project.recipeapptest.presentation.components.LoadingRecipeShimmer
 import com.project.recipeapptest.presentation.components.RecipeView
 import com.project.recipeapptest.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,7 +64,9 @@ class RecipeFragment : Fragment() {
                                 .fillMaxWidth()
                         ) {
                             if (loading && recipe == null) {
-                                Text("Loading...")
+                                LoadingRecipeShimmer(
+                                    imageHeight = IMAGE_HEIGHT.dp
+                                )
                             } else {
                                 recipe?.let {
                                     RecipeView(recipe = it)
