@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import com.project.recipeapptest.presentation.BaseApplication
 import com.project.recipeapptest.presentation.components.*
 import com.project.recipeapptest.presentation.theme.AppTheme
@@ -68,28 +69,14 @@ class RecipeListFragment : Fragment() {
                             )
                         },
                         content = {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(MaterialTheme.colors.background)
-                            ) {
-                                if (loading && recipes.isEmpty()) {
-                                    LoadingRecipeListShimmer(250.dp)
-                                } else {
-                                    LazyColumn {
-                                        itemsIndexed(
-                                            items = recipes
-                                        ) { index, recipe ->
-                                            viewModel.onChangeRecipeScrollPosition(index)
-                                            if ((index + 5) >= (page * PAGE_SIZE) && !loading) {
-                                                viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
-                                            }
-                                            RecipeCard(recipe = recipe, onClick = {})
-                                        }
-                                    }
-                                }
-                                CircularIndeterminateProgressBar(isDisplayed = loading)
-                            }
+                            RecipeList(
+                                loading = loading,
+                                recipes = recipes,
+                                onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition,
+                                page = page,
+                                onTriggerEvent = viewModel::onTriggerEvent,
+                                navController = findNavController()
+                            )
                         }
                     )
                 }

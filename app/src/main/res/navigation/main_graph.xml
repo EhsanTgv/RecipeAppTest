@@ -15,5 +15,10 @@
     <fragment
         android:id="@+id/recipeFragment"
         android:name="com.project.recipeapptest.presentation.ui.recipe.RecipeFragment"
-        android:label="RecipeFragment" />
+        android:label="RecipeFragment">
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
 </navigation>

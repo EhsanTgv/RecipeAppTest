@@ -12,8 +12,12 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 
 class RecipeFragment : Fragment() {
+
+    private val args: RecipeFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,7 +27,7 @@ class RecipeFragment : Fragment() {
             setContent {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Recipe Fragment",
+                        text = "Selected RecipeId: ${args.id}",
                         fontSize = 21.sp,
                     )
                 }
