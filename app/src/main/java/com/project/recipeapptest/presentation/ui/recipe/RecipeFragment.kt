@@ -55,7 +55,10 @@ class RecipeFragment : Fragment() {
 
                 val scaffoldState = rememberScaffoldState()
 
-                AppTheme(darkTheme = application.isDark.value) {
+                AppTheme(
+                    darkTheme = application.isDark.value,
+                    displayProgressBar = loading
+                ) {
                     Scaffold(
                         scaffoldState = scaffoldState,
                     ) {
@@ -72,7 +75,6 @@ class RecipeFragment : Fragment() {
                                     RecipeView(recipe = it)
                                 }
                             }
-                            CircularIndeterminateProgressBar(isDisplayed = loading)
                         }
                     }
                 }

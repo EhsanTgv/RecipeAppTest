@@ -16,7 +16,7 @@ fun CircularIndeterminateProgressBar(
             modifier = Modifier.fillMaxWidth()
         ) {
             val progressBar = createRef()
-            val topGuideline = createGuidelineFromTop(0.5f)
+            val topGuideline = createGuidelineFromTop(0.8f)
 
             CircularProgressIndicator(
                 color = MaterialTheme.colors.primary,
